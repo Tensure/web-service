@@ -9,7 +9,7 @@ import (
 	"fmt"
 	_ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/mysql"
 	"github.com/go-co-op/gocron"
-	_ "github.com/joho/godotenv/autoload"
+	//_ "github.com/joho/godotenv/autoload"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/gmail/v1"

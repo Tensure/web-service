@@ -5,9 +5,11 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	_ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/postgres"
 	"github.com/gorilla/mux"
-	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 	"net/http"
 	"os"
 	"strconv"
@@ -36,7 +38,12 @@ func (a *App) Initialize() {
 	var dbConnectionString = os.Getenv("DBConnectionString")
 
 	var err error
-	if a.DB, err = gorm.Open("mysql", dbConnectionString); err != nil {
+
+	a.DB, err = gorm.Open(postgres.New(postgres.Config{
+		DriverName: "cloudsqlpostgres",
+		DSN:        dbConnectionString,
+	}))
+	if err != nil {
 		panic(err)
 	}
 	a.DB.AutoMigrate(&models.Feedback{})
