@@ -56,8 +56,19 @@ func main() {
 	}()
 	//don't block other code execution
 	s.StartAsync()
-	//start and listen to requests
-	log.Fatal(http.ListenAndServe(":8080", a.Router))
+
+	// Determine port for HTTP service.
+	port := os.Getenv("$PORT")
+	if port == "" {
+		port = "8080"
+		log.Printf("defaulting to port %s", port)
+	}
+
+	// Start HTTP server.
+	log.Printf("listening on port %s", port)
+	if err := http.ListenAndServe(":"+port, a.Router); err != nil {
+		log.Fatal(err)
+	}
 }
 
 // GmailService : Gmail client for sending email
